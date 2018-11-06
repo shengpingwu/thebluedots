@@ -10,14 +10,18 @@ import javax.persistence.Id;
 
 import com.thebluedots.application.model.MagnitudeType;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 
 @Data
 @Builder
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Magnitude implements Serializable{
 	
 	/**

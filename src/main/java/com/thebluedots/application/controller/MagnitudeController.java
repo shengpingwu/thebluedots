@@ -14,11 +14,11 @@ import com.thebluedots.application.repository.MagnitudeRepository;
 @Controller
 public class MagnitudeController {
 	
-	@Autowired
 	private MagnitudeRepository magnitudeRepository;
 	
-	public MagnitudeController() {
-		
+	@Autowired
+	public MagnitudeController(MagnitudeRepository magnitudeRepository) {
+		this.magnitudeRepository = magnitudeRepository;
 	}
 	
 	@GetMapping("/magnitude")

@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.thebluedots.application.entity.Magnitude;
 
-public interface MagnitudeRepository extends JpaRepository<Magnitude, Long>{
+public interface IMagnitudeRepository extends JpaRepository<Magnitude, Long>{
 
 }

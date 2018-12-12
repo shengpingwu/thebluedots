@@ -1,40 +1,53 @@
 package com.thebluedots.application.controller;
 
-import java.sql.Timestamp;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.thebluedots.application.entity.Magnitude;
-import com.thebluedots.application.model.MagnitudeType;
-import com.thebluedots.application.repository.MagnitudeRepository;
+import com.thebluedots.application.exception.MagnitudeNotFoundException;
+import com.thebluedots.application.repository.IMagnitudeRepository;
 
 
-@Controller
+@RestController
+@RequestMapping("/v1")
 public class MagnitudeController {
 	
-	private MagnitudeRepository magnitudeRepository;
+	private IMagnitudeRepository magnitudeRepository;
 	
 	@Autowired
-	public MagnitudeController(MagnitudeRepository magnitudeRepository) {
+	public MagnitudeController(IMagnitudeRepository magnitudeRepository) {
 		this.magnitudeRepository = magnitudeRepository;
 	}
 	
 	@GetMapping("/magnitude")
-	public Magnitude saveAnMagnitude() {
-		Magnitude magnitude = Magnitude.builder()
-				.name("Magnitude1")
-				.description("Una magnitud de example")
-				.decimals(1)
-				.max_value("")
-				.min_value("")
-				.type(MagnitudeType.NUMBER)
-				.creation_time(new Timestamp(System.currentTimeMillis()))
-				.build();
+	public List<Magnitude>  getAllMagnitude() {
 		
-		magnitudeRepository.save(magnitude);
+		return magnitudeRepository.findAll();
+	}
+	
+	@GetMapping("/magnitude/{id}")
+	public Magnitude getMagnitudeById(@PathVariable Long id) {
 		
-		return magnitude;
+		return magnitudeRepository.findById(id).orElseThrow(()-> new MagnitudeNotFoundException(id));
+	}
+	
+	@PostMapping("/magnitude")
+	public Magnitude saveAnMagnitude(@RequestBody Magnitude magnitude) {
+		
+		return magnitudeRepository.save(magnitude);
+	}
+	
+	@DeleteMapping("/magnitude/{id}")
+	public void deleteMagnitude(@PathVariable Long id) {
+		
+		magnitudeRepository.deleteById(id);
 	}
 }
